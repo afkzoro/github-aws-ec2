@@ -17,7 +17,7 @@ jobs:
         USER: ${{ secrets.EC2_USER }}
       run: |
         echo "$PRIVATE_KEY" > github-ec2.pem && chmod 400 github-ec2.pem
-        ssh -i "github-ec2.pem" ${USER}@${HOST} '
+        ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
           cd /home/ubuntu/simple-web-server &&
           git pull origin main &&
           npm install &&
