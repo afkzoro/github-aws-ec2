@@ -16,7 +16,7 @@ jobs:
         HOST: ${{ secrets.EC2_HOST }}
         USER: ${{ secrets.EC2_USER }}
       run: |
-        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+        echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
         ssh -o StrictHostKeyChecking=no -i private_key ${USER}@${HOST} '
           cd /home/ubuntu/simple-web-server &&
           git pull origin main &&
