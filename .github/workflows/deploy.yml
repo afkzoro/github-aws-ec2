@@ -21,13 +21,22 @@ jobs:
         echo "Current directory: $(pwd)"
         echo "Listing home directory:"
         ls -la ~
+
+        echo "Installing Node.js..."
+        sudo apt install -y nodejs
+
+        echo "Installing PM2..."
+        sudo npm install -g pm2
+
         if [ -d .git ]; then
           git pull origin main
         else
           git clone https://github.com/afkzoro/github-aws-ec2.git
         fi
+
         cd ~/github-aws-ec2/simple-web-server
         npm install
+        
         if command -v pm2 &> /dev/null; then
           pm2 restart server.js || pm2 start server.js
         else
