@@ -23,7 +23,8 @@ jobs:
         ls -la ~
 
         echo "Installing Node.js..."
-        sudo apt install -y nodejs
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+        nvm install node
 
         echo "Installing PM2..."
         sudo npm install -g pm2
@@ -36,7 +37,7 @@ jobs:
 
         cd ~/github-aws-ec2/simple-web-server
         npm install
-        
+
         if command -v pm2 &> /dev/null; then
           pm2 restart server.js || pm2 start server.js
         else
