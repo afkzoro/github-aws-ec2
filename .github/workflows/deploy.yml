@@ -39,5 +39,5 @@ jobs:
 
         cd ~/github-aws-ec2/simple-web-server
         npm install
-        npm start&
+        npm start
         '
