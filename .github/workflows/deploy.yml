@@ -24,7 +24,7 @@ jobs:
         if [ -d .git ]; then
           git pull origin main
         else
-          git clone https://github.com/afkzoro/github-aws-ec2.git .
+          git clone https://github.com/afkzoro/github-aws-ec2.git
         fi
         cd /github-aws-ec2/simple-web-server
         npm install
