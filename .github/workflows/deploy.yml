@@ -39,10 +39,5 @@ jobs:
 
         cd ~/github-aws-ec2/simple-web-server
         npm install
-
-        if command -v pm2 &> /dev/null; then
-          pm2 restart server.js || pm2 start server.js
-        else
-          echo "PM2 not found. Please install it or use an alternative method to start your server."
-        fi
+        npm start &
         '
