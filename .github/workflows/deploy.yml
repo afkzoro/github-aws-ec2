@@ -18,8 +18,19 @@ jobs:
       run: |
         echo "$PRIVATE_KEY" > github-ec2.pem && chmod 400 github-ec2.pem
         ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
-          cd /home/ubuntu/simple-web-server &&
-          git pull origin main &&
-          npm install &&
-          pm2 restart server.js
+        echo "Current directory: $(pwd)"
+        echo "Listing home directory:"
+        ls -la ~
+        if [ -d .git ]; then
+          git pull origin main
+        else
+          git clone https://github.com/afkzoro/github-aws-ec2.git .
+        fi
+        cd /github-aws-ec2/simple-web-server
+        npm install
+        if command -v pm2 &> /dev/null; then
+          pm2 restart server.js || pm2 start server.js
+        else
+          echo "PM2 not found. Please install it or use an alternative method to start your server."
+        fi
         '
