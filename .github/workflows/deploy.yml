@@ -29,7 +29,7 @@ jobs:
         nvm install node
 
         echo "Installing PM2..."
-        sudo npm install -g pm2
+        npm install -g pm2
 
         if [ -d .git ]; then
           git pull origin main
@@ -39,7 +39,7 @@ jobs:
 
         cd ~/github-aws-ec2/simple-web-server
         npm install
-        
+
         echo "Starting/restarting application..."
         pm2 restart server.js || pm2 start server.js
         '
