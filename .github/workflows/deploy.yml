@@ -1,47 +1,37 @@
-name: Node CI
+name: Deploy to AWS CodeDeploy
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  build-and-deploy:
-
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    - name: Deploy to Server
-      uses: easingthemes/ssh-deploy@main
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
       with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-rlgoDzvc -i --delete"
-          SOURCE: "simple-web-server/"
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_TARGET }}
-          EXCLUDE: "/dist/, /node_modules/"
-          SCRIPT_BEFORE: |
-            whoami
-            ls -al
-            mkdir -p ${{ secrets.REMOTE_TARGET }}
-          SCRIPT_AFTER: |
-            cd ${{ secrets.REMOTE_TARGET }}
-            ls -al
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
-            echo "Installing Node.js..."
-            if ! command -v nvm &> /dev/null; then
-              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-              export NVM_DIR="$HOME/.nvm"
-              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-            fi
-            nvm install node
+    - name: Zip source code
+      run: zip -r my-app.zip .
+      working-directory: simple-web-server
 
-            echo "Installing PM2..."
-            if ! command -v pm2 &> /dev/null; then
-            npm install -g pm2
-            fi
+    - name: Upload to S3
+      run: aws s3 cp my-app.zip s3://${{ secrets.S3_BUCKET }}/my-app.zip
+      working-directory: simple-web-server
 
-            npm install
-
-            echo "Starting/restarting application..."
-            pm2 restart server.js || pm2 start server.js
+    - name: Deploy to CodeDeploy
+      run: |
+        aws deploy create-deployment \
+          --application-name MyApplication \
+          --deployment-group-name MyDeploymentGroup \
+          --s3-location bucket=${{ secrets.S3_BUCKET }},bundleType=zip,key=my-app.zip
+      working-directory: simple-web-server
