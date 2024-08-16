@@ -17,6 +17,6 @@ jobs:
     - name: Create CodeDeploy Deployment
       run: |
         aws deploy create-deployment \
-          --application-name Your_Application_Name \
-          --deployment-group-name Your_Deployment_Group_Name \
+          --application-name node-cicd \
+          --deployment-group-name node-cicd-dg \
           --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
