@@ -3,6 +3,8 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/github-aws-ec2
+    overwrite: true
+    file_exists_behavior: OVERWRITE
 hooks:
   BeforeInstall:
     - location: scripts/create_directory.sh
