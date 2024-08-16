@@ -1,2 +1,2 @@
 #!/bin/bash
-mkdir -p ~/simple-web-server
+echo "Creating directory..."

@@ -1,4 +1,4 @@
 #!/bin/bash
-cd ~/simple-web-server
+cd ~/github-aws-ec2
 pm2 stop all
 pm2 start server.js

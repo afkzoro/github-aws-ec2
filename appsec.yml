@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: simple-web-server/
-    destination: ~/simple-web-server
+  - source: 
+    destination: /home/ubuntu/github-aws-ec2
 hooks:
   BeforeInstall:
     - location: scripts/create_directory.sh
