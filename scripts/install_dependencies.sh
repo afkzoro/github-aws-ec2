@@ -12,5 +12,5 @@ if ! command -v pm2 &> /dev/null; then
     npm install -g pm2
 fi
 
-cd ~/simple-web-server
+cd ~/github-aws-ec2
 npm install
