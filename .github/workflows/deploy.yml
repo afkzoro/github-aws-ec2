@@ -22,11 +22,10 @@ jobs:
 
     - name: Zip source code
       run: zip -r my-app.zip .
-      working-directory: simple-web-server
 
     - name: Upload to S3
       run: aws s3 cp my-app.zip s3://${{ secrets.S3_BUCKET }}/my-app.zip
-      working-directory: simple-web-server
+
 
     - name: Deploy to CodeDeploy
       run: |
@@ -34,4 +33,3 @@ jobs:
           --application-name node-cicd \
           --deployment-group-name node-cicd-dg \
           --s3-location bucket=${{ secrets.S3_BUCKET }},bundleType=zip,key=my-app.zip
-      working-directory: simple-web-server
