@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('Hello World! This server is running on Node.js with Express. v1');
+  res.send('Hello Baeldung! This server is running on Node.js with Express. v1');
 });
 
 app.get('/info', (req, res) => {
